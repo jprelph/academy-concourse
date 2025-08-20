@@ -31,18 +31,38 @@ resource "aws_iam_role_policy_attachment" "sm" {
 
 module "eks" {
   source   = "terraform-aws-modules/eks/aws"
+  version = "~> 21.0"
   providers = {
     aws = aws.primary
   }
-  version  = "20.37.1"
-  cluster_name    = var.cluster_name
-  cluster_version = "1.33"
-  cluster_endpoint_public_access           = true
+  
+  name    = var.cluster_name
+  kubernetes_version = "1.33"
+  endpoint_public_access           = true
   enable_cluster_creator_admin_permissions = true
-  cluster_compute_config = {
-    enabled    = true
-    node_pools = []
+
+  eks_managed_node_groups = {
+    example = {
+      # Starting on 1.30, AL2023 is the default AMI type for EKS managed node groups
+      ami_type       = "AL2023_x86_64_STANDARD"
+      instance_types = ["m7i.large"]
+      min_size     = 2
+      max_size     = 10
+      desired_size = 2
+    }
   }
+
+  addons = {
+    coredns                = {}
+    eks-pod-identity-agent = {
+      before_compute = true
+    }
+    kube-proxy             = {}
+    vpc-cni                = {
+      before_compute = true
+    }
+  }
+
   vpc_id     = module.vpc.vpc_id
   subnet_ids = setunion(
     module.vpc.public_subnets,
@@ -56,31 +76,4 @@ module "eks" {
   node_security_group_tags = {
     "cluster" = var.cluster_name
   }
-}
-
-# Create Access entry for EKS without default nodeclass and nodepool
-resource "aws_eks_access_entry" "auto_mode" {
-  provider = aws.primary
-  cluster_name  = module.eks.cluster_name
-  principal_arn = module.eks.node_iam_role_arn
-  type          = "EC2"
-}
-
-resource "aws_eks_access_policy_association" "auto_mode" {
-  provider = aws.primary
-  cluster_name  = module.eks.cluster_name
-  policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSAutoNodePolicy"
-  principal_arn = module.eks.node_iam_role_arn
-  access_scope {
-    type = "cluster"
-  }
-}
-
-# Associate Pod Identity with Primary Cluster
-resource "aws_eks_pod_identity_association" "eks_sm_association" {
-  provider        = aws.primary
-  cluster_name    = module.eks.cluster_name
-  namespace       = "default"
-  service_account = "secrets-manager-account"
-  role_arn        = aws_iam_role.eks_sm_access.arn
 }

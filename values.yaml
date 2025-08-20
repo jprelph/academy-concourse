@@ -21,7 +21,7 @@ image: concourse/concourse
 ##      of `concourse/concourse`.
 ## Ref: https://hub.docker.com/r/concourse/concourse/tags/
 ##
-imageTag: "7.14.1"
+imageTag: "7.13.2"
 
 ## Specific image digest to use in place of a tag.
 ## Ref: https://kubernetes.io/docs/concepts/configuration/overview/#container-images
@@ -126,15 +126,15 @@ concourse:
     ## By default all volume streming goes through the web nodes.
     ## NOTE: All workers must be on the same LAN network.
     ##
-    enablep2pVolumeStreaming: true
+    enablep2pVolumeStreaming: false
 
     ## Enable caching streamed resource volumes on the destination worker.
     ##
-    enableCacheStreamedVolumes: true
+    enableCacheStreamedVolumes: false
 
     ## Enable web UI and API endpoint for resource causality.
     ##
-    enableResourceCausality: true
+    enableResourceCausality: false
 
     ## Maximum number of jobs to be scheduling at the same time.
     ##
@@ -291,7 +291,7 @@ concourse:
 
     ## Time limit on P2P volume streaming
     ##
-    p2pVolumeStreamingTimeout: 1m
+    p2pVolumeStreamingTimeout:
 
     ## Maximum number of checks that can be started per second. If not
     ## specified, # this will be calculated as (# of resources)/(resource

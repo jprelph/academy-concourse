@@ -13,7 +13,7 @@ module "vpc" {
   providers = {
     aws = aws.primary
   }
-  version  = "5.21.0"
+  version  = "6.0.1"
   name = "events-vpc"
   cidr = var.primary_cidr
   azs  = slice(data.aws_availability_zones.available_primary.names, 0, 3)

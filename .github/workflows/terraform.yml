@@ -70,10 +70,9 @@ jobs:
         ./get_helm.sh
     
     - name: Configure Primary Cluster
-      working-directory: ./terraform
+      working-directory: ./
       if: "${{ github.event.inputs.TERRAFORM_ACTION == 'apply' }}"
       run: |
         aws eks update-kubeconfig --region eu-west-1 --name academy
         terraform output -json | jq -r 'to_entries[] | "\(.key): \(.value.value)"' >> /tmp/values.yaml
-        helm install nodepool -f /tmp/values.yaml --set failoverRegion=primary oci://registry-1.docker.io/jamesrelph/nodepool:1.1.0
-        kubectl apply -f ../storage-class.yaml
+        kubectl apply -f storage-class.yaml

@@ -42,7 +42,7 @@ module "eks" {
   enable_cluster_creator_admin_permissions = true
 
   eks_managed_node_groups = {
-    example = {
+    concourse = {
       # Starting on 1.30, AL2023 is the default AMI type for EKS managed node groups
       ami_type       = "AL2023_x86_64_STANDARD"
       instance_types = ["m7i.large"]
@@ -58,16 +58,23 @@ module "eks" {
       before_compute = true
     }
     kube-proxy             = {}
+    aws-ebs-csi-driver = {
+      most_recent = true 
+    }
     vpc-cni                = {
       before_compute = true
     }
   }
 
   vpc_id     = module.vpc.vpc_id
-  subnet_ids = setunion(
-    module.vpc.public_subnets,
-    module.vpc.private_subnets
-  )
+  
+  #subnet_ids = setunion(
+  #  module.vpc.public_subnets,
+  #  module.vpc.private_subnets
+  #)
+  
+  subnet_ids = module.vpc.private_subnets
+
   node_iam_role_name = "${var.cluster_name}-node-role"
   node_iam_role_use_name_prefix = false
   node_iam_role_tags = {

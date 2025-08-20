@@ -44,7 +44,8 @@ module "eks" {
   eks_managed_node_groups = {
     concourse = {
       # Starting on 1.30, AL2023 is the default AMI type for EKS managed node groups
-      ami_type       = "AL2023_x86_64_STANDARD"
+      # ami_type       = "AL2023_x86_64_STANDARD"
+      ami_id = ami-092036edac4e24dce
       instance_types = ["m7i.large"]
       min_size     = 2
       max_size     = 10
@@ -62,7 +63,8 @@ module "eks" {
     }
     kube-proxy             = {}
     aws-ebs-csi-driver = {
-      most_recent = true 
+      most_recent = true
+      service_account_role_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${var.cluster_name}-ebs-csi-controller"
     }
     vpc-cni                = {
       before_compute = true

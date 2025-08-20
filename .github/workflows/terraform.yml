@@ -48,18 +48,18 @@ jobs:
     - name: Plan Terraform
       working-directory: ./terraform
       if: "${{ github.event.inputs.TERRAFORM_ACTION == 'plan' }}"
-      run: terraform plan -var dbUser="$DBUSER" -var dbPassword="$DBPASSWORD" -var dbName="$DBNAME"
+      run: terraform plan 
 
     - name: Destroy Terraform
       working-directory: ./terraform
       if: "${{ github.event.inputs.TERRAFORM_ACTION == 'destroy' }}"
-      run: terraform destroy -var dbUser="$DBUSER" -var dbPassword="$DBPASSWORD" -var dbName="$DBNAME" --auto-approve
+      run: terraform destroy --auto-approve
 
     # Apply includes Terraform and Nodepool configuration
     - name: Apply Terraform
       working-directory: ./terraform
       if: "${{ github.event.inputs.TERRAFORM_ACTION == 'apply' }}"
-      run: terraform apply -var dbUser="$DBUSER" -var dbPassword="$DBPASSWORD" -var dbName="$DBNAME" --auto-approve
+      run: terraform apply --auto-approve
 
     - name: Install Helm
       working-directory: ./terraform

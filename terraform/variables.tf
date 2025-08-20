@@ -1,0 +1,18 @@
+variable "region" {
+  type = string
+}
+
+variable "cluster_name" {
+  type = string
+}
+
+variable "primary_cidr" {
+  type = string
+}
+
+variable "primary_vpc_private" {
+ type = list(string) 
+}
+variable "primary_vpc_public" {
+ type = list(string) 
+}

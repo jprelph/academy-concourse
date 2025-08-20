@@ -55,7 +55,7 @@ concourse:
   web:
     ## A name for this Concourse cluster, to be displayed on the dashboard page.
     ##
-    clusterName: Academy
+    clusterName: academy
 
     ## Enable this flag in order to customize the `client_id` and
     ## `client_secret` used when logging into the Concourse UI.
@@ -251,7 +251,7 @@ concourse:
     ##
     ## Example: http://ci.concourse-ci.org
     ##
-    externalUrl:
+    externalUrl: concourse.platform-academy.com
 
     encryption:
       ## Enable encryption of pipeline configuration. Encryption keys can be set via secrets
@@ -2063,7 +2063,7 @@ web:
 
   ## Number of replicas.
   ##
-  replicas: 1
+  replicas: 2
 
   ## Startup command for the web component.
   ## Allows to override the docker image command
@@ -2146,8 +2146,8 @@ web:
   ##
   resources:
     requests:
-      cpu: "100m"
-      memory: "128Mi"
+      cpu: "500m"
+      memory: "256Mi"
 
   ## Configure additional environment variables for the
   ## web containers.
@@ -2327,7 +2327,7 @@ web:
       ##   service.beta.kubernetes.io/aws-load-balancer-backend-port: "api"
       ##   service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
       ##
-      annotations: {}
+      annotations: {service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"}
 
       ## When using `web.service.api.type: LoadBalancer`, restrict access to the load balancer to particular IPs
       ## Example:
@@ -2381,7 +2381,7 @@ web:
       ##   service.beta.kubernetes.io/aws-load-balancer-backend-port: "atc"
       ##   service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
       ##
-      annotations: {}
+      annotations: {service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"}
 
       ## When using `web.service.workerGateway.type: LoadBalancer`, restrict access to the load balancer to particular IPs
       ## Example:
@@ -2497,7 +2497,7 @@ worker:
 
   ## Number of replicas.
   ##
-  replicas: 2
+  replicas: 4
 
   ## Array of extra containers to run alongside the Concourse worker
   ## container.
@@ -2547,7 +2547,7 @@ worker:
   ##
   resources:
     requests:
-      cpu: "100m"
+      cpu: "500m"
       memory: "512Mi"
 
   ## Configure additional environment variables for the

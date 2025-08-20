@@ -12,11 +12,6 @@ provider "aws" {
   region  = var.region
 }
 
-provider "aws" {
-  alias   = "secondary"
-  region  = var.sec_region
-}
-
 terraform {
   backend "s3" {
     bucket = "academy-tf"

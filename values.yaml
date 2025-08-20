@@ -251,7 +251,7 @@ concourse:
     ##
     ## Example: http://ci.concourse-ci.org
     ##
-    externalUrl: concourse.platform-academy.com
+    externalUrl: http://concourse.platform-academy.com:8080
 
     encryption:
       ## Enable encryption of pipeline configuration. Encryption keys can be set via secrets

@@ -1,4 +1,4 @@
-# Primary EKS Cluster
+data "aws_caller_identity" "current" {}
 
 # Global Role Setup
 data "aws_iam_policy_document" "assume_role" {
@@ -45,7 +45,7 @@ module "eks" {
     concourse = {
       # Starting on 1.30, AL2023 is the default AMI type for EKS managed node groups
       # ami_type       = "AL2023_x86_64_STANDARD"
-      ami_id = ami-092036edac4e24dce
+      ami_id = "ami-092036edac4e24dce"
       instance_types = ["m7i.large"]
       min_size     = 2
       max_size     = 10

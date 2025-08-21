@@ -1,0 +1,21 @@
+name: Docker Image CI
+
+on:
+ workflow_dispath:
+   inputs:
+     DOCKER_ACTION:
+       description: "Docker Action"
+       required: true
+       default: "build"
+       type: choice
+       options:
+         - build
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build the Docker image
+      if: "${{ github.event.inputs.DOCKER_ACTION == 'build' }}"
+      run: docker build . --file Dockerfile

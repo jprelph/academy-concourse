@@ -1,7 +1,7 @@
 name: Docker Image CI
 
 on:
- workflow_dispath:
+ workflow_dispatch:
    inputs:
      DOCKER_ACTION:
        description: "Docker Action"

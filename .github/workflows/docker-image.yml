@@ -10,6 +10,7 @@ on:
        type: choice
        options:
          - build
+         - push
 
 jobs:
   build:
@@ -17,5 +18,8 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build the Docker image
-      if: "${{ github.event.inputs.DOCKER_ACTION == 'build' }}"
-      run: docker build . --file Dockerfile
+      if: "${{ github.event.inputs.DOCKER_ACTION == 'build' || 'push' }}"
+      run: docker build . --file Dockerfile -t jamesrelph/academytest:latest
+    - name: Push the Docker image
+      if: "${{ github.event.inputs.DOCKER_ACTION == 'push' }}"
+      run: docker push jamesrelph/academytest
